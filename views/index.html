@@ -240,15 +240,10 @@
             //生成markerdown
             genMarkerdownFile : function(){
 
-                vm.message='sendPdfMessage';
-                vm.sendMessage();
-
-                if(!vm.contentMarkdown){
-
-                    setTimeout(1000);
-                }
-
+                //下载markdown文件
+                //var url = "http://api.hehear.com/downLoadMdFile";
                 var url = "http://localhost:8080/downLoadMdFile";
+
                 var form = $("<form></form>").attr("action",url).attr("method","post");
                 form.append($("<input/>").attr("type","hidden").attr("name","mdContent").attr("value",vm.contentMarkdown));
                 form.appendTo('body').submit().remove();
@@ -258,14 +253,7 @@
             //生成pdf
             genPdfFile : function(){
 
-                vm.message='sendPdfMessage';
-                vm.sendMessage();
-
-                if(!vm.htmlContent){
-
-                    setTimeout(1000);
-                }
-
+                //拼接html内容
                 var htmlContent = "<!DOCTYPE html><html lang=\"zh\"><head>" +
                     "<style type=\"text/css\">@page {size:210mm;margin:0.25min} " +
                     "body{font-family:SimSun;word-wrap: break-word;word-break: break-all}</style>" +
@@ -273,27 +261,24 @@
                     +vm.htmlContent
                     +"</body></html>";
 
+                //生成pdf
                 $.ajax({
-                    //url: 'http://sprite.hehear.com/sprite/sort/bubble',
+                    //url:'http://api.hehear.com/genPdfByHtmlContent',
                     url:'http://localhost:8080/genPdfByHtmlContent',
+                    async:false,
                     type: 'post',
-                    //headers:{'Content-Type': 'application/json'},
                     data: {'htmlContent':htmlContent},
-                    //data: JSON.stringify({'htmlContent':htmlContent}),
                     success: function (result) {
 
-                        //alert(result.record);
-
+                        //下载
+                        //var url = "http://api.hehear.com/downLoadPdfFile";
                         var url = "http://localhost:8080/downLoadPdfFile";
                         var form = $("<form></form>").attr("action",url).attr("method","post");
                         form.append($("<input/>").attr("type","hidden").attr("name","pdfPath").attr("value",result.record));
                         form.appendTo('body').submit().remove();
-
                     }
                 });
-
             },
-
 
             //外部vue向iframe内部传数据
             sendMessage : function() {
@@ -305,14 +290,13 @@
                     }
                 }, '*');
 
-
             },
             //处理iframe返回的数据
             handleMessage:function async(event){
 
-                if(vm.isLoaded){
-                    return;
-                }
+                // if(vm.isLoaded){
+                //     return;
+                // }
 
                 var data = event.data;
 
@@ -324,11 +308,9 @@
                         vm.htmlContent = data.params.html;
                         vm.contentMarkdown = data.params.markdown;
 
-                        console.log(vm.htmlContent);
                     }
-                    vm.isLoaded = true;
+                    //vm.isLoaded = true;
                 }
-
             }
         }
     });

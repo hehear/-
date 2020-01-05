@@ -68,7 +68,7 @@
         		
         		sendForParentMessage:function(message){
         			
-        			console.log(message);
+        			//console.log(message);
 	                // 向父vue页面发送信息
 	                window.parent.postMessage({
 	                    cmd: message,
@@ -96,6 +96,10 @@
                         },
                         //previewTheme : "",
                         //editorTheme : "",
+                        onchange:function(){
+                            // 当编辑器数据变化时，将数据传到外部，以供外部数据使用
+                            vm_editormd.sendForParentMessage("returnPdfMessage");
+                        },
                         markdown : '',
                         codeFold : true,
                         //syncScrolling : false,
@@ -111,11 +115,6 @@
                         tex : true,                   // 开启科学公式TeX语言支持，默认关闭
                         flowChart : true,             // 开启流程图支持，默认关闭
                         sequenceDiagram : false,       // 开启时序/序列图支持，默认关闭,
-                        //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
-                        //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
-                        //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
-                        //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
-                        //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
 
                     });
         			 
